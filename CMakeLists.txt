@@ -29,16 +29,20 @@ project(VR)
 include(ucm.cmake)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(OUTPUT_BIN_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 if (MSVC)
 	set(OUTPUT_BIN_DIRECTORY ${OUTPUT_BIN_DIRECTORY}/$<CONFIG>)
 endif ()
 include_directories(${OUTPUT_BIN_DIRECTORY})
+add_definitions(-DWIN32_LEAN_AND_MEAN=1)
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 set(CMAKE_CXX_STANDARD 17)
 ucm_set_runtime(STATIC)
+
+set(VR_CONFIG "${CMAKE_CURRENT_SOURCE_DIR}/sample-config.json" CACHE STRING "Configuration file")
 
 if (NOT WIN32)
     message(FATAL_ERROR "This project is meant for Windows platform only")
@@ -88,6 +92,8 @@ macro (export_reflective_loader TARGET)
 		set_target_properties(${TARGET} PROPERTIES LINK_FLAGS "/INCLUDE:ReflectiveLoader")
 	endif ()
 endmacro ()
+
+option(VR_PAYLOAD_SERVICE "Build payload as service dll" OFF)
 
 add_subdirectory(dep)
 add_subdirectory(src)

